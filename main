@@ -1,0 +1,43 @@
+import java.util.*;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Graph<Node> graph = new Graph<Node>();
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter the max capacity for three jugs (separated by spaces): ");
+		String max = scan.nextLine();
+		
+		String[] a = max.split(" ");
+		int first = Integer.parseInt(a[0]);
+		int second = Integer.parseInt(a[1]);
+		int third = Integer.parseInt(a[2]);
+		
+		Node start = new Node(first,0,0);
+		Node end = new Node(first/2,first/2,0);
+		
+		if (!ConstructGraph.validProblem(first,second,third)) //if the numbers given are not valid
+			System.out.println("These are invalid numbers for the jug capacities.");
+		else{
+			if (ConstructGraph.construct(graph,first,second,third)){ //if target can be reached
+				System.out.println("\nThe amount of vertices in the graph is: " + graph.getNodeCount());
+				System.out.println("The amount of edges in the graph is: " + graph.getEdgeCount()+ "\n");
+				System.out.println(graph);
+				List list = new ArrayList(ConstructGraph.pathhelp(graph, start, end));
+				System.out.println("The fastest way to the target is: " + list);
+				System.out.println("The number of steps is: " + list.size());
+			}
+			else{ //target can't be reached
+				System.out.println("\nThe amount of vertices in the graph is: " + graph.getNodeCount());
+				System.out.println("The amount of edges in the graph is: " + graph.getEdgeCount()+ "\n");
+				System.out.println(graph);
+				System.out.println("\nThe target node is not able to be reached.");
+			}
+		}
+		
+		scan.close();
+	}
+}
