@@ -1,0 +1,193 @@
+import java.util.*;
+
+public class ConstructGraph{
+	
+	public static boolean validProblem(int a, int b, int c){
+		if (a%2 == 0){ //makes sure a is even
+			if (a >= b){
+				if (b >= c){
+					if (c >= 0){
+						if (b >= a/2)
+							return true;
+					}
+				}
+				
+			}
+			
+		}
+		return false; // if all conditions are not met then returns false
+	}
+	
+	public static List pathhelp(Graph<Node> g, Node a, Node b){
+		return Graph.bfsPath(g, a, b);
+	}
+
+	public static boolean construct(Graph<Node> graph, int a, int b, int c)
+	{
+		Queue<Node> q = new ArrayDeque<Node>(); //queue to hold the values which need edges added
+		List<Integer> hash = new ArrayList<Integer>(); //holds the hashes for the values that were added to the queue
+		Node start = new Node(a,0,0); //starting node
+		
+		Node t = new Node(a/2,a/2,0); // target node
+		int target = t.hashCode(); //target hash
+		
+		hash.add(start.hashCode()); //adds hash to hash list
+		Node.setCap(a, b, c); //sets the capacity for the jugs based on input
+		q.add(start); //adds first node to queue
+		while (q.size() > 0)
+		{
+			Node test = q.poll(); //takes the node from the top of the queue
+			graph.add(test); //adds the node to the graph
+			Node d = new Node(0,test.a+test.b,test.c); //the 1st of 12 types of pour
+			if (Node.isValid(d)){ //if it's a valid node
+				if (!graph.containsEdge(test, d)){ //checks if graph already has this edge
+					if (test.hashCode() != d.hashCode()){ //
+						graph.addEdge(test, d); //adds edge from test to the new pour
+					}
+				}
+
+				if (!hash.contains(d.hashCode())){ //if this node has not already been added to queue
+					q.add(d); //adds node to queue
+					hash.add(d.hashCode()); //adds the hash of this node to the hash list
+				}
+			}
+			Node e = new Node(0,test.b,test.a+test.c);
+			if (Node.isValid(e)){
+				if (!graph.containsEdge(test, e)){
+					if (test.hashCode() != e.hashCode()){
+						graph.addEdge(test, e);
+					}
+				}
+				if (!hash.contains(e.hashCode())){
+					q.add(e);
+					hash.add(e.hashCode());
+				}
+			}
+			Node f = new Node(test.a+test.b-Node.capb,Node.capb,test.c);
+			if (Node.isValid(f)){
+				if (!graph.containsEdge(test, f)){
+					if (test.hashCode() != f.hashCode()){
+						graph.addEdge(test, f);
+					}
+				}
+				if (!hash.contains(f.hashCode())){
+					q.add(f);
+					hash.add(f.hashCode());
+				}
+			}
+			Node g = new Node(test.a+test.c-Node.capc,test.b,Node.capc);
+			if (Node.isValid(g)){
+				if (!graph.containsEdge(test, g)){
+					if (test.hashCode() != g.hashCode()){
+						graph.addEdge(test, g);
+					}
+				}
+				if (!hash.contains(g.hashCode())){
+					q.add(g);
+					hash.add(g.hashCode());
+				}
+			}
+			Node h = new Node(test.b+test.a,0,test.c);
+			if (Node.isValid(h)){
+				if (!graph.containsEdge(test, h)){
+					if (test.hashCode() != h.hashCode()){
+						graph.addEdge(test, h);
+					}
+				}
+				if (!hash.contains(h.hashCode())){
+					q.add(h);
+					hash.add(h.hashCode());
+				}
+			}
+			Node i = new Node(test.a,0,test.b+test.c);
+			if (Node.isValid(i)){
+				if (!graph.containsEdge(test, i)){
+					if (test.hashCode() != i.hashCode()){
+						graph.addEdge(test, i);
+					}
+				}
+				if (!hash.contains(i.hashCode())){
+					q.add(i);
+					hash.add(i.hashCode());
+				}
+			}
+			Node j = new Node(Node.capa,test.b+test.a-Node.capa,test.c);
+			if (Node.isValid(j)){
+				if (!graph.containsEdge(test, j)){
+					if (test.hashCode() != j.hashCode()){
+						graph.addEdge(test, j);
+					}
+				}
+				if (!hash.contains(j.hashCode())){
+					q.add(j);
+					hash.add(j.hashCode());
+				}
+			}
+			Node k = new Node(test.a,test.b+test.c-Node.capc,Node.capc);
+			if (Node.isValid(k)){
+				if (!graph.containsEdge(test, k)){
+					if (test.hashCode() != k.hashCode()){
+						graph.addEdge(test, k);
+					}
+				}
+				if (!hash.contains(k.hashCode())){
+					q.add(k);
+					hash.add(k.hashCode());
+				}
+			}
+			Node l = new Node(test.a+test.c,test.b,0);
+			if (Node.isValid(l)){
+				if (!graph.containsEdge(test, l)){
+					if (test.hashCode() != l.hashCode()){
+						graph.addEdge(test, l);
+					}
+				}
+				if (!hash.contains(l.hashCode())){
+					q.add(l);
+					hash.add(l.hashCode());
+				}
+			}
+			Node m = new Node(test.a,test.b+test.c,0);
+			if (Node.isValid(m)){
+				if (!graph.containsEdge(test, m)){
+					if (test.hashCode() != m.hashCode()){
+						graph.addEdge(test, m);
+					}
+				}
+				if (!hash.contains(m.hashCode())){
+					q.add(m);
+					hash.add(m.hashCode());
+				}
+			}
+			Node n = new Node(Node.capa,test.b,test.c+test.a-Node.capa);
+			if (Node.isValid(n)){
+				if (!graph.containsEdge(test, n)){
+					if (test.hashCode() != n.hashCode()){
+						graph.addEdge(test, n);
+					}
+				}
+				if (!hash.contains(n.hashCode())){
+					q.add(n);
+					hash.add(n.hashCode());
+				}
+			}
+			Node o = new Node(test.a,Node.capb,test.c+test.b-Node.capb);
+			if (Node.isValid(o)){
+				if (!graph.containsEdge(test, o)){
+					if (test.hashCode() != o.hashCode()){
+						graph.addEdge(test, o);
+					}
+				}
+				if (!hash.contains(o.hashCode())){
+					q.add(o);
+					hash.add(o.hashCode());
+				}
+			}
+		}
+		if (hash.contains(target))
+			return true;
+		else
+			return false;
+
+	}
+}
