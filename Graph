@@ -1,0 +1,110 @@
+import java.util.*;
+import java.util.Collections;
+
+public class Graph<T>{
+	
+	protected Map<T,List<T>> neighbors;
+	
+	public Graph()
+	{
+		neighbors = new LinkedHashMap<T,List<T>>();
+	}
+	
+	public void add(T key)
+	{
+		if(!neighbors.containsKey(key))
+			neighbors.put(key, new ArrayList<T>());
+	}
+
+	public boolean containsEdge(T begin, T end)
+	{
+		if (!neighbors.containsKey(begin))
+			return false;
+		else
+		{
+			List<T> test = neighbors.get(begin);
+			for (int i=0; i<test.size(); i++)
+			{
+				if (test.get(i).hashCode() == end.hashCode())
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	
+	public void addEdge(T begin, T end)
+	{
+		neighbors.get(begin).add(end);
+	}
+	
+	public List<T> neighbors(T v)
+	{
+		List<T> a = new ArrayList<T>();
+		for (Map.Entry<T, List<T>> entry : neighbors.entrySet()){
+			if (entry.getKey().hashCode() == v.hashCode()){
+				a = entry.getValue();
+			}	
+		}
+		return a;
+	}
+
+	public int getNodeCount(){
+		return neighbors.keySet().size();
+	}
+	
+	public int getEdgeCount(){
+		int count = 0;
+		for (Map.Entry<T, List<T>> entry : neighbors.entrySet())
+			count += entry.getValue().size();
+		return count;
+	}
+	
+	public static <T> List<T> bfsPath(Graph<T> graph, T start, T end){
+		Set<T> visited = new LinkedHashSet<T>();
+		Queue<T> queue = new ArrayDeque<T>(); 
+		Map<T, T> parent = new LinkedHashMap<T, T>();
+		
+		visited.add(start);
+		queue.add(start);
+		parent.put(start, null);
+		
+		while (!queue.isEmpty())
+		{
+			T v = queue.remove();
+			for (T u : graph.neighbors(v))
+			{
+				if (!visited.contains(u))
+				{
+					visited.add(u);
+					queue.add(u);
+					parent.put(u, v);
+				}
+				
+				if (u.equals(end))
+				{
+					List<T> path = new ArrayList<T>();
+					while (u != null)
+					{
+						path.add(u);
+						u = parent.get(u);
+					}
+					Collections.reverse(path);
+					return path;
+				}
+			}
+		}
+		return new ArrayList<T>();
+	}
+	
+	@Override
+	public String toString(){
+		String out = "";
+		for (Map.Entry<T, List<T>> entry : neighbors.entrySet()){
+			out += entry.getKey() + " --> " + entry.getValue() + "\n";
+		}
+		
+		return out;
+	}
+}
