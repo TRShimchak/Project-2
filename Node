@@ -1,0 +1,56 @@
+public class Node {
+	public int a,b,c;
+	public static int capa,capb,capc;
+	
+	public Node(int a, int b, int c)
+	{
+		this.a = a;
+		this.b = b;
+		this.c = c;
+	}
+	
+	public static void setCap(int a, int b, int c)
+	{
+		capa = a;
+		capb = b;
+		capc = c;
+	}
+	
+	public static boolean isValid(Node a)
+	{
+		if (a.a <= capa && a.b <= capb && a.c <= capc)
+		{
+			if (a.a >= 0 && a.b >= 0 && a.c >= 0)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean equals(Node a, Node b)
+	{
+		if (a.a == b.a && a.b == b.b && a.c == b.c)
+			return true;
+		else
+			return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + a;
+		result = prime * result + b;
+		result = prime * result + c;
+		return result;
+	}
+
+	@Override
+	public String toString()
+	{
+		String out = "(" + a + "," + b + "," + c + ")";
+		return out;
+	}
+	
+}
